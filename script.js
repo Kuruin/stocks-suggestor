@@ -6,31 +6,39 @@ const stockDatabase = {
 };
 
 // Function to fetch stock data
-function fetchStockData() {
+async function fetchStockData() {
     let symbol = document.getElementById("stockSymbol").value.toUpperCase();
     let stockInfo = document.getElementById("stockInfo");
-    
-    if (stockDatabase[symbol]) {
-        let stock = stockDatabase[symbol];
+
+    try {
+        let response = await fetch(`http://127.0.0.1:5000/getStock?symbol=${symbol}`);
+        let data = await response.json();
+
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
 
         // Display stock details
-        document.getElementById("companyName").innerText = symbol;
-        document.getElementById("stockPrice").innerText = `$${stock.price}`;
-        document.getElementById("marketCap").innerText = stock.marketCap;
-        document.getElementById("high52").innerText = `$${stock.high52}`;
-        document.getElementById("low52").innerText = `$${stock.low52}`;
-        
+        document.getElementById("companyName").innerText = data.symbol;
+        document.getElementById("stockPrice").innerText = `$${data.price.toFixed(2)}`;
+        document.getElementById("marketCap").innerText = data.marketCap;
+        document.getElementById("high52").innerText = `$${data.high52}`;
+        document.getElementById("low52").innerText = `$${data.low52}`;
+
         // Generate recommendation
-        let recommendation = getStockRecommendation(stock.price, stock.high52, stock.low52);
+        let recommendation = getStockRecommendation(data.price, data.high52, data.low52);
         document.getElementById("recommendation").innerText = recommendation;
-        document.getElementById("recommendation").style.color = recommendation === "Buy" ? "green" : recommendation === "Sell" ? "red" : "orange";
+        document.getElementById("recommendation").style.color =
+            recommendation === "Buy" ? "green" : recommendation === "Sell" ? "red" : "orange";
 
         stockInfo.classList.remove("hidden");
-    } else {
-        alert("Stock not found. Try AAPL, TSLA, or MSFT.");
+
+    } catch (error) {
+        console.error("Error fetching stock data:", error);
+        alert("Failed to fetch stock data. Make sure the backend is running.");
     }
 }
-
 // Simple Recommendation Logic
 function getStockRecommendation(price, high52, low52) {
     if (price < (low52 + (high52 - low52) * 0.2)) {
