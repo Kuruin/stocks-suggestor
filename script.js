@@ -49,4 +49,3 @@ function getStockRecommendation(price, high52, low52) {
         return "Hold";  // In the middle range
     }
 }
-
