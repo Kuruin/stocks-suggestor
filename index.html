@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Stock Suggestor</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>Smart Stock Suggestor</h1>
+    </header>
+
+    <section class="search">
+        <input type="text" id="stockSymbol" placeholder="Enter Stock Symbol (e.g., AAPL)">
+        <button onclick="fetchStockData()">Get Suggestion</button>
+    </section>
+
+    <section id="stockInfo" class="hidden">
+        <h2 id="companyName"></h2>
+        <p>Current Price: <span id="stockPrice"></span></p>
+        <p>Market Cap: <span id="marketCap"></span></p>
+        <p>52-Week High: <span id="high52"></span></p>
+        <p>52-Week Low: <span id="low52"></span></p>
+        <h3>Our Recommendation: <span id="recommendation"></span></h3>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Smart Stock Suggestor</p>
+    </footer>
+
+</body>
+</html>
