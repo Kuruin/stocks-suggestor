@@ -1,3 +1,6 @@
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)  
+[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
+
 **Disclosure : I am not SEBI registered.The information provided here is for education purposes only.I will not be responsible for any of your profit/loss with this github repository suggestions.Consult your financial advisor before taking any decisions.This repository neither advice nor endorsement.**
 
 # Stock Suggestor
