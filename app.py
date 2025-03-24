@@ -136,7 +136,7 @@ if st.sidebar.button('Update'):
     fig.update_layout(title=f'{ticker} {time_period.upper()} Chart',
                       xaxis_title='Time',
                       yaxis_title='Price (₹)',
-                      height=600)
+                      height=700)
     st.plotly_chart(fig, use_container_width=True)
 
     # Display historical data and technical indicators
