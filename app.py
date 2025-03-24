@@ -32,7 +32,7 @@ def fetch_stock_data(ticker, period, interval):
 def process_data(data):
     if data.index.tzinfo is None:
         data.index = data.index.tz_localize('UTC')
-    data.index = data.index.tz_convert('US/Eastern')
+    data.index = data.index.tz_convert('Asia/Kolkata')
     data.reset_index(inplace=True)
     data.rename(columns={'Date': 'Datetime'}, inplace=True)
     return data
@@ -72,7 +72,7 @@ st.title('Real Time Stock Dashboard')
 
 # Sidebar for user input parameters
 st.sidebar.header('Chart Parameters')
-ticker = st.sidebar.text_input('Ticker', 'ADBE')
+ticker = st.sidebar.text_input('Ticker', 'RELIANCE.NS')
 time_period = st.sidebar.selectbox(
     'Time Period', ['1d', '1wk', '1mo', '1y', 'max'])
 chart_type = st.sidebar.selectbox('Chart Type', ['Candlestick', 'Line'])
@@ -101,12 +101,12 @@ if st.sidebar.button('Update'):
     last_close, change, pct_change, high, low, volume = calculate_metrics(data)
 
     # Display main metrics
-    st.metric(label=f"{ticker} Last Price", value=f"{last_close:.2f} USD",
+    st.metric(label=f"{ticker} Last Price", value=f"{last_close:.2f} ₹",
               delta=f"{change:.2f} ({pct_change:.2f}%)")
 
     col1, col2, col3 = st.columns(3)
-    col1.metric("High", f"{high:.2f} USD")
-    col2.metric("Low", f"{low:.2f} USD")
+    col1.metric("High", f"{high:.2f} ₹")
+    col2.metric("Low", f"{low:.2f} ₹")
     col3.metric("Volume", f"{volume:,}")
 
     # Plot the stock price chart
@@ -132,7 +132,7 @@ if st.sidebar.button('Update'):
     # Format graph
     fig.update_layout(title=f'{ticker} {time_period.upper()} Chart',
                       xaxis_title='Time',
-                      yaxis_title='Price (USD)',
+                      yaxis_title='Price (₹)',
                       height=600)
     st.plotly_chart(fig, use_container_width=True)
 
@@ -148,7 +148,7 @@ if st.sidebar.button('Update'):
 
 # Sidebar section for real-time stock prices of selected symbols
 st.sidebar.header('Real-Time Stock Prices')
-stock_symbols = ['AAPL', 'GOOGL', 'AMZN', 'MSFT']
+stock_symbols = ['RELIANCE.NS', 'TCS.NS', 'INFY.NS', 'HDFCBANK.NS']
 for symbol in stock_symbols:
     real_time_data = fetch_stock_data(symbol, '1d', '1m')
     if not real_time_data.empty:
@@ -156,7 +156,7 @@ for symbol in stock_symbols:
         last_price = float(real_time_data['Close'].iloc[-1])
         change = float(last_price - real_time_data['Open'].iloc[0])
         pct_change = float((change / real_time_data['Open'].iloc[0]) * 100)
-        st.sidebar.metric(f"{symbol}", f"{last_price:.2f} USD",
+        st.sidebar.metric(f"{symbol}", f"{last_price:.2f} ₹",
                           f"{change:.2f} ({pct_change:.2f}%)")
 
 # Sidebar information section
