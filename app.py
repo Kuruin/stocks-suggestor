@@ -85,7 +85,7 @@ interval_mapping = {
     '1d': '1m',
     '1wk': '30m',
     '1mo': '1d',
-    '1y': '1wk',
+    '1y': '1d',
     '2y': '1wk',
     '5y': '1wk',
     '10y': '1wk',
@@ -101,8 +101,15 @@ if st.sidebar.button('Update'):
     data.columns = data.columns.droplevel(1)
     data = process_data(data)
     data = add_technical_indicators(data)
-
     last_close, change, pct_change, high, low, volume = calculate_metrics(data)
+
+    # Extract SMA values
+    sma_20 = data['SMA_20'].iloc[-1]  # Latest SMA 20 value
+    sma_50 = data['SMA_50'].iloc[-1]  # Latest SMA 50 value
+    sma_200 = data['SMA_200'].iloc[-1]  # Latest SMA 200 value
+
+    # st.success(f"✅ Condition Met!\n**Date:** \n**Closing Price:** ")
+    # st.error("❌ Condition Not Met")
 
     # Display main metrics
     st.metric(label=f"{ticker} Last Price", value=f"{last_close:.2f} ₹",
@@ -149,9 +156,8 @@ if st.sidebar.button('Update'):
     # Display historical data and technical indicators
     st.subheader('Historical Data')
     st.dataframe(data[['Datetime', 'Open', 'High', 'Low', 'Close', 'Volume']])
-
     st.subheader('Technical Indicators')
-    st.dataframe(data[['Datetime', 'SMA_20', 'EMA_20']])
+    st.dataframe(data[['Datetime', 'SMA_20', 'SMA_50', 'SMA_200', 'EMA_20']])
 
 
 # 2C: SIDEBAR PRICES ############
@@ -168,6 +174,20 @@ for symbol in stock_symbols:
         pct_change = float((change / real_time_data['Open'].iloc[0]) * 100)
         st.sidebar.metric(f"{symbol}", f"{last_price:.2f} ₹",
                           f"{change:.2f} ({pct_change:.2f}%)")
+
+# Print SMA vlaues
+st.subheader("Latest SMA Values")
+st.write(f"SMA 20: {sma_20:.2f} ₹")
+st.write(f"SMA 50: {sma_50:.2f} ₹")
+st.write(f"SMA 200: {sma_200:.2f} ₹")
+
+for i in range(len(data)):
+    if (data['Close'][i] < data['SMA_200'][i] and data['Close'][i] < data['SMA_50'][i] and data['Close'][i] < data['SMA_20'][i]):
+        if (data['SMA_200'][i] > data['SMA_50'][i] and data['SMA_50'][i] > data['SMA_20'][i]):
+            st.success(
+                f"✅ Condition Met!\\\n**Date: {data['Datetime'][i]}** \n**Buying Price: {data['Close'][i]}** ")
+            break
+
 
 # Sidebar information section
 st.sidebar.subheader('About')
