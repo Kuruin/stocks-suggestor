@@ -94,6 +94,7 @@ interval_mapping = {
 # Update the dashboard based on user input
 if st.sidebar.button('Update'):
     data = fetch_stock_data(ticker, time_period, interval_mapping[time_period])
+    data.columns = data.columns.droplevel(1)
     data = process_data(data)
     data = add_technical_indicators(data)
 
