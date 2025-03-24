@@ -89,7 +89,7 @@ interval_mapping = {
     '2y': '1wk',
     '5y': '1wk',
     '10y': '1wk',
-    'max': '1wk'
+    'max': '1d'
 }
 
 
