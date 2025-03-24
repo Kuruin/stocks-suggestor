@@ -6,7 +6,6 @@ import plotly.graph_objects as go
 import pandas as pd
 import yfinance as yf
 from datetime import datetime, timedelta
-import pytz
 import ta
 
 ##########################################################################################
@@ -55,6 +54,8 @@ def calculate_metrics(data):
 
 def add_technical_indicators(data):
     data['SMA_20'] = ta.trend.sma_indicator(data['Close'], window=20)
+    data['SMA_50'] = ta.trend.sma_indicator(data['Close'], window=50)
+    data['SMA_200'] = ta.trend.sma_indicator(data['Close'], window=200)
     data['EMA_20'] = ta.trend.ema_indicator(data['Close'], window=20)
     return data
 
@@ -77,7 +78,7 @@ time_period = st.sidebar.selectbox(
     'Time Period', ['1d', '1wk', '1mo', '1y', '2y', '5y', '10y', 'max'])
 chart_type = st.sidebar.selectbox('Chart Type', ['Candlestick', 'Line'])
 indicators = st.sidebar.multiselect(
-    'Technical Indicators', ['SMA 20', 'EMA 20'])
+    'Technical Indicators', ['SMA 20', 'SMA 50', 'SMA 200', 'EMA 20'])
 
 # Mapping of time periods to data intervals
 interval_mapping = {
@@ -128,6 +129,12 @@ if st.sidebar.button('Update'):
         if indicator == 'SMA 20':
             fig.add_trace(go.Scatter(
                 x=data['Datetime'], y=data['SMA_20'], name='SMA 20'))
+        elif indicator == 'SMA 50':
+            fig.add_trace(go.Scatter(
+                x=data['Datetime'], y=data['SMA_50'], name='SMA 50'))
+        elif indicator == 'SMA 200':
+            fig.add_trace(go.Scatter(
+                x=data['Datetime'], y=data['SMA_200'], name='SMA 200'))
         elif indicator == 'EMA 20':
             fig.add_trace(go.Scatter(
                 x=data['Datetime'], y=data['EMA_20'], name='EMA 20'))
