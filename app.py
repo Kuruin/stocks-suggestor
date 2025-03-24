@@ -74,7 +74,7 @@ st.title('Real Time Stock Dashboard')
 st.sidebar.header('Chart Parameters')
 ticker = st.sidebar.text_input('Ticker', 'RELIANCE.NS')
 time_period = st.sidebar.selectbox(
-    'Time Period', ['1d', '1wk', '1mo', '1y', 'max'])
+    'Time Period', ['1d', '1wk', '1mo', '1y', '2y', '5y', '10y', 'max'])
 chart_type = st.sidebar.selectbox('Chart Type', ['Candlestick', 'Line'])
 indicators = st.sidebar.multiselect(
     'Technical Indicators', ['SMA 20', 'EMA 20'])
@@ -85,6 +85,9 @@ interval_mapping = {
     '1wk': '30m',
     '1mo': '1d',
     '1y': '1wk',
+    '2y': '1wk',
+    '5y': '1wk',
+    '10y': '1wk',
     'max': '1wk'
 }
 
