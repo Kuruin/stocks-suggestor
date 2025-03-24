@@ -185,7 +185,7 @@ for i in range(len(data)):
     if (data['Close'][i] < data['SMA_200'][i] and data['Close'][i] < data['SMA_50'][i] and data['Close'][i] < data['SMA_20'][i]):
         if (data['SMA_200'][i] > data['SMA_50'][i] and data['SMA_50'][i] > data['SMA_20'][i]):
             st.success(
-                f"✅ Condition Met!\\\n**Date: {data['Datetime'][i]}** \n**Buying Price: {data['Close'][i]}** ")
+                f"✅ Condition Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]}** ")
             break
 
 
