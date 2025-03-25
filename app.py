@@ -102,7 +102,7 @@ sma_50 = 0
 data = {}
 
 if ((sma_200 and sma_20 and sma_50) == 0):
-    st.success("Click 'Update' to fetch the latest data.")
+    st.toast("Click 'Update' to fetch the latest data.")
 
 # Update the dashboard based on user input
 if st.sidebar.button('Update'):
