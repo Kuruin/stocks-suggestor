@@ -95,8 +95,19 @@ interval_mapping = {
 
 # 2B: MAIN CONTENT AREA ############
 
+# Define to 0 so it dosent popop a NameError
+sma_20 = 0
+sma_200 = 0
+sma_50 = 0
+data = {}
+
+if ((sma_200 and sma_20 and sma_50) == 0):
+    st.success("Click 'Update' to fetch the latest data.")
+
 # Update the dashboard based on user input
 if st.sidebar.button('Update'):
+    st.session_state.show_message = False
+    st.success("**Strategy recommendations are shown at the bottom.**")
     data = fetch_stock_data(ticker, time_period, interval_mapping[time_period])
     data.columns = data.columns.droplevel(1)
     data = process_data(data)
@@ -158,7 +169,11 @@ if st.sidebar.button('Update'):
     st.dataframe(data[['Datetime', 'Open', 'High', 'Low', 'Close', 'Volume']])
     st.subheader('Technical Indicators')
     st.dataframe(data[['Datetime', 'SMA_20', 'SMA_50', 'SMA_200', 'EMA_20']])
-
+    # Print SMA vlaues
+    st.subheader("Latest SMA Values")
+    st.write(f"SMA 20: {sma_20:.2f} ₹")
+    st.write(f"SMA 50: {sma_50:.2f} ₹")
+    st.write(f"SMA 200: {sma_200:.2f} ₹")
 
 # 2C: SIDEBAR PRICES ############
 
@@ -174,12 +189,6 @@ for symbol in stock_symbols:
         pct_change = float((change / real_time_data['Open'].iloc[0]) * 100)
         st.sidebar.metric(f"{symbol}", f"{last_price:.2f} ₹",
                           f"{change:.2f} ({pct_change:.2f}%)")
-
-# Print SMA vlaues
-st.subheader("Latest SMA Values")
-st.write(f"SMA 20: {sma_20:.2f} ₹")
-st.write(f"SMA 50: {sma_50:.2f} ₹")
-st.write(f"SMA 200: {sma_200:.2f} ₹")
 
 for i in range(len(data)):
     if (data['Close'][i] < data['SMA_200'][i] and data['Close'][i] < data['SMA_50'][i] and data['Close'][i] < data['SMA_20'][i]):
