@@ -190,11 +190,13 @@ for symbol in stock_symbols:
         st.sidebar.metric(f"{symbol}", f"{last_price:.2f} ₹",
                           f"{change:.2f} ({pct_change:.2f}%)")
 
+# Get only date and format to words
+data['Datetime'] = data['Datetime'].dt.strftime('%B %d, %Y')
 for i in range(len(data)):
     if (data['Close'][i] < data['SMA_200'][i] and data['Close'][i] < data['SMA_50'][i] and data['Close'][i] < data['SMA_20'][i]):
         if (data['SMA_200'][i] > data['SMA_50'][i] and data['SMA_50'][i] > data['SMA_20'][i]):
-            st.success(
-                f"✅ Condition Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]}** ")
+            st.info(
+                f"✅ Condition Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]:.2f}** ")
             break
 
 
