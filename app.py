@@ -192,13 +192,30 @@ for symbol in stock_symbols:
 
 # Get only date and format to words
 data['Datetime'] = data['Datetime'].dt.strftime('%B %d, %Y')
+
+
+st.subheader("3 EMA Strategy")
+# EMA Strategy Conditions
+buy_index = 0
+buy_signal_found = False
 for i in range(len(data)):
     if (data['Close'][i] < data['SMA_200'][i] and data['Close'][i] < data['SMA_50'][i] and data['Close'][i] < data['SMA_20'][i]):
         if (data['SMA_200'][i] > data['SMA_50'][i] and data['SMA_50'][i] > data['SMA_20'][i]):
+            buy_index = i
             st.info(
-                f"✅ Condition Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]:.2f}** ")
+                f"✅ Buy Condition Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]:.2f}** ")
+            buy_signal_found = True
             break
-
+if buy_index == 0:
+    st.error("OOPS NO BUY SIGNAL")
+else:
+    for j in range(buy_index + 1, len(data)):
+        if buy_signal_found:
+            if (data['Close'][j] > data['SMA_200'][j] and data['Close'][j] > data['SMA_50'][j] and data['Close'][j] > data['SMA_200'][j]):
+                if (data['SMA_20'][j] > data['SMA_50'][j] and data['SMA_50'][j] > data['SMA_200'][j]):
+                    st.error(
+                        f"❌ Sell Condition Met!\\\n**Date: {data['Datetime'][j]}** \\\n**Selling Price: {data['Close'][j]:.2f}** ")
+                    break
 
 # Sidebar information section
 st.sidebar.subheader('About')
