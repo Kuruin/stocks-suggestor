@@ -106,7 +106,6 @@ if ((sma_200 and sma_20 and sma_50) == 0):
 
 # Update the dashboard based on user input
 if st.sidebar.button('Update'):
-    st.session_state.show_message = False
     st.success("**Strategy recommendations are shown at the bottom.**")
     data = fetch_stock_data(ticker, time_period, interval_mapping[time_period])
     data.columns = data.columns.droplevel(1)
