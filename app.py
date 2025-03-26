@@ -193,8 +193,12 @@ for symbol in stock_symbols:
 # Get only date and format to words
 data['Datetime'] = data['Datetime'].dt.strftime('%B %d, %Y')
 
+# Clickable subheader, mimics st.subheader() but makes it a clickable link
+st.markdown(
+    "<h3><a href='https://youtu.be/QwZIbSiENMI?feature=shared' target='_blank' style='text-decoration: none; color: inherit;'>3 EMA Strategy</a></h3>",
+    unsafe_allow_html=True
+)
 
-st.subheader("3 EMA Strategy")
 # EMA Strategy Conditions
 buy_index = 0
 buy_signal_found = False
