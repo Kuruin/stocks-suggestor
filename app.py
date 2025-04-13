@@ -201,13 +201,15 @@ st.markdown(
 
 # EMA Strategy Conditions
 buy_index = 0
+count = 1
 buy_signal_found = False
+sell_signal_found = False
 for i in range(len(data)):
     if (data['Close'][i] < data['SMA_200'][i] and data['Close'][i] < data['SMA_50'][i] and data['Close'][i] < data['SMA_20'][i]):
         if (data['SMA_200'][i] > data['SMA_50'][i] and data['SMA_50'][i] > data['SMA_20'][i]):
             buy_index = i
             st.info(
-                f"✅ Buy Condition Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]:.2f}** ")
+                f"✅ Buy Condition **{count}** Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]:.2f}** ")
             buy_signal_found = True
             break
 if buy_index == 0:
@@ -217,9 +219,23 @@ else:
         if buy_signal_found:
             if (data['Close'][j] > data['SMA_200'][j] and data['Close'][j] > data['SMA_50'][j] and data['Close'][j] > data['SMA_200'][j]):
                 if (data['SMA_20'][j] > data['SMA_50'][j] and data['SMA_50'][j] > data['SMA_200'][j]):
+                    sell_index = j
                     st.error(
-                        f"❌ Sell Condition Met!\\\n**Date: {data['Datetime'][j]}** \\\n**Selling Price: {data['Close'][j]:.2f}** ")
+                        f"❌ Sell Condition **{count}** Met!\\\n**Date: {data['Datetime'][j]}** \\\n**Selling Price: {data['Close'][j]:.2f}** ")
+                    sell_signal_found = True
+                    count += 1
                     break
+if buy_signal_found:
+    if sell_signal_found:
+        for i in range(sell_index + 1, len(data)):
+            if (data['Close'][i] < data['SMA_200'][i] and data['Close'][i] < data['SMA_50'][i] and data['Close'][i] < data['SMA_20'][i]):
+                if (data['SMA_200'][i] > data['SMA_50'][i] and data['SMA_50'][i] > data['SMA_20'][i]):
+                    buy_index = i
+                    st.info(
+                        f"✅ Buy Condition **{count}** Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]:.2f}** ")
+                    # buy_signal_found = True
+                    break
+
 
 # Sidebar information section
 st.sidebar.subheader('About')
