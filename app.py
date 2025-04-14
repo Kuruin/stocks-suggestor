@@ -261,7 +261,8 @@ def ema_strategy():
             break
 
 
-ema_strategy()
+with st.expander("EMA Strategy"):
+    ema_strategy()
 
 # Sidebar information section
 st.sidebar.subheader('About')
