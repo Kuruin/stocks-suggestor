@@ -226,29 +226,38 @@ def calculate_ROI(buy, sell):
 buy_index = 0
 buying_price = 0
 count = 1
-buy_signal_found = False
 
-for i in range(len(data)):
-    if buyConditon(data, i):
-        buy_index = i
-        st.info(
-            f"✅ Buy Condition **{count}** Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]:.2f}** ")
-        buying_price = data['Close'][i]
-        buy_signal_found = True
+i = 0
+while i < len(data):
+    buy_signal_found = False
+    for a in range(i, len(data)):
+        if buyConditon(data, a):
+            buy_index = a
+            st.info(
+                f"✅ Buy Condition **{count}** Met!\\\n**Date: {data['Datetime'][a]}** \\\n**Buying Price: {data['Close'][a]:.2f}** ")
+            buying_price = data['Close'][a]
+            buy_signal_found = True
+            break
+
+    if not buy_signal_found:
+        st.error("OOPS NO BUY SIGNAL")
         break
 
-if buy_index == 0:
-    st.error("OOPS NO BUY SIGNAL")
-else:
     for j in range(buy_index + 1, len(data)):
-        if buy_signal_found and sellCondition(data, j):
+        sell_signal_found = False
+        if sellCondition(data, j):
             sell_index = j
             selling_price = data['Close'][j]
             st.error(
                 f"❌ Sell Condition **{count}** Met!\\\n**Date: {data['Datetime'][j]}** \\\n**Selling Price: {data['Close'][j]:.2f}** \\\n **Total Return On Investment (ROI) : {calculate_ROI(buying_price, selling_price):.2f}%**")
             count += 1
+            i = sell_index + 1
+            sell_signal_found = True
             break
 
+    if not sell_signal_found:
+        st.warning("⚠️ Waiting for sell signal.")
+        break
 
 # Sidebar information section
 st.sidebar.subheader('About')
