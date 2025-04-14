@@ -217,7 +217,7 @@ if buy_index == 0:
 else:
     for j in range(buy_index + 1, len(data)):
         if buy_signal_found:
-            if (data['Close'][j] > data['SMA_200'][j] and data['Close'][j] > data['SMA_50'][j] and data['Close'][j] > data['SMA_200'][j]):
+            if (data['Close'][j] > data['SMA_200'][j] and data['Close'][j] > data['SMA_50'][j] and data['Close'][j] > data['SMA_20'][j]):
                 if (data['SMA_20'][j] > data['SMA_50'][j] and data['SMA_50'][j] > data['SMA_200'][j]):
                     sell_index = j
                     st.error(
