@@ -4,7 +4,15 @@
 **Disclosure : I am not SEBI registered.The information provided here is for education purposes only.I will not be responsible for any of your profit/loss with this github repository suggestions.Consult your financial advisor before taking any decisions.This repository neither advice nor endorsement.**
 
 - To run app, write following command in CMD. or use any IDE.
-  
+
+  Install the requirements
+
+  ```
+  pip install -r requirements.txt
+  ```
+
+  Run the app
+
   ```
   streamlit run App.py
   ```
