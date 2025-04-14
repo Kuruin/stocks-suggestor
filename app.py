@@ -119,9 +119,6 @@ if st.sidebar.button('Update'):
     sma_50 = data['SMA_50'].iloc[-1]  # Latest SMA 50 value
     sma_200 = data['SMA_200'].iloc[-1]  # Latest SMA 200 value
 
-    # st.success(f"✅ Condition Met!\n**Date:** \n**Closing Price:** ")
-    # st.error("❌ Condition Not Met")
-
     # Display main metrics
     st.metric(label=f"{ticker} Last Price", value=f"{last_close:.2f} ₹",
               delta=f"{change:.2f} ({pct_change:.2f}%)")
