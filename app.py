@@ -192,7 +192,7 @@ data['Datetime'] = data['Datetime'].dt.strftime('%B %d, %Y')
 
 # Clickable subheader, mimics st.subheader() but makes it a clickable link
 st.markdown(
-    "<h3><a href='https://youtu.be/QwZIbSiENMI?feature=shared' target='_blank' style='text-decoration: none; color: inherit;'>3 EMA Strategy</a></h3>",
+    "<h3><a href='https://youtu.be/QwZIbSiENMI?feature=shared' target='_blank' style='text-decoration: none; color: inherit;'>EMA Strategy</a></h3>",
     unsafe_allow_html=True
 )
 
@@ -261,7 +261,7 @@ def ema_strategy():
             break
 
 
-with st.expander("EMA Strategy"):
+with st.expander("Signals"):
     ema_strategy()
 
 # Sidebar information section
