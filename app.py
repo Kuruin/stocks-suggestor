@@ -199,42 +199,51 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
 # EMA Strategy Conditions
+def buyConditon(data, i):
+    return (
+        data['Close'][i] < data['SMA_200'][i]
+        and data['Close'][i] < data['SMA_50'][i]
+        and data['Close'][i] < data['SMA_20'][i]
+        and data['SMA_200'][i] > data['SMA_50'][i]
+        and data['SMA_50'][i] > data['SMA_20'][i]
+    )
+
+
+def sellCondition(data, j):
+    return (
+        data['Close'][j] > data['SMA_200'][j]
+        and data['Close'][j] > data['SMA_50'][j]
+        and data['Close'][j] > data['SMA_20'][j]
+        and data['SMA_20'][j] > data['SMA_50'][j]
+        and data['SMA_50'][j] > data['SMA_200'][j]
+    )
+
+
+# Variables for EMA strategy
 buy_index = 0
 count = 1
 buy_signal_found = False
-sell_signal_found = False
+
 for i in range(len(data)):
-    if (data['Close'][i] < data['SMA_200'][i] and data['Close'][i] < data['SMA_50'][i] and data['Close'][i] < data['SMA_20'][i]):
-        if (data['SMA_200'][i] > data['SMA_50'][i] and data['SMA_50'][i] > data['SMA_20'][i]):
-            buy_index = i
-            st.info(
-                f"✅ Buy Condition **{count}** Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]:.2f}** ")
-            buy_signal_found = True
-            break
+    if buyConditon(data, i):
+        buy_index = i
+        st.info(
+            f"✅ Buy Condition **{count}** Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]:.2f}** ")
+        buy_signal_found = True
+        break
+
 if buy_index == 0:
     st.error("OOPS NO BUY SIGNAL")
 else:
     for j in range(buy_index + 1, len(data)):
-        if buy_signal_found:
-            if (data['Close'][j] > data['SMA_200'][j] and data['Close'][j] > data['SMA_50'][j] and data['Close'][j] > data['SMA_20'][j]):
-                if (data['SMA_20'][j] > data['SMA_50'][j] and data['SMA_50'][j] > data['SMA_200'][j]):
-                    sell_index = j
-                    st.error(
-                        f"❌ Sell Condition **{count}** Met!\\\n**Date: {data['Datetime'][j]}** \\\n**Selling Price: {data['Close'][j]:.2f}** ")
-                    sell_signal_found = True
-                    count += 1
-                    break
-if buy_signal_found:
-    if sell_signal_found:
-        for i in range(sell_index + 1, len(data)):
-            if (data['Close'][i] < data['SMA_200'][i] and data['Close'][i] < data['SMA_50'][i] and data['Close'][i] < data['SMA_20'][i]):
-                if (data['SMA_200'][i] > data['SMA_50'][i] and data['SMA_50'][i] > data['SMA_20'][i]):
-                    buy_index = i
-                    st.info(
-                        f"✅ Buy Condition **{count}** Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]:.2f}** ")
-                    # buy_signal_found = True
-                    break
+        if buy_signal_found and sellCondition(data, j):
+            sell_index = j
+            st.error(
+                f"❌ Sell Condition **{count}** Met!\\\n**Date: {data['Datetime'][j]}** \\\n**Selling Price: {data['Close'][j]:.2f}** ")
+            count += 1
+            break
 
 
 # Sidebar information section
