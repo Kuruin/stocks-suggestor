@@ -221,6 +221,10 @@ def sellCondition(data, j):
     )
 
 
+def calculate_ROI(buy, sell):
+    return (((sell - buy) / buy) * 100)
+
+
 # Variables for EMA strategy
 buy_index = 0
 buying_price = 0
@@ -244,7 +248,7 @@ else:
             sell_index = j
             selling_price = data['Close'][j]
             st.error(
-                f"❌ Sell Condition **{count}** Met!\\\n**Date: {data['Datetime'][j]}** \\\n**Selling Price: {data['Close'][j]:.2f}** \\\n **Total Return On Investment (ROI) : {((selling_price - buying_price) / buying_price) * 100:.2f}%**")
+                f"❌ Sell Condition **{count}** Met!\\\n**Date: {data['Datetime'][j]}** \\\n**Selling Price: {data['Close'][j]:.2f}** \\\n **Total Return On Investment (ROI) : {calculate_ROI(buying_price, selling_price):.2f}%**")
             count += 1
             break
 
