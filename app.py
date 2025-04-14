@@ -223,6 +223,7 @@ def sellCondition(data, j):
 
 # Variables for EMA strategy
 buy_index = 0
+buying_price = 0
 count = 1
 buy_signal_found = False
 
@@ -231,6 +232,7 @@ for i in range(len(data)):
         buy_index = i
         st.info(
             f"✅ Buy Condition **{count}** Met!\\\n**Date: {data['Datetime'][i]}** \\\n**Buying Price: {data['Close'][i]:.2f}** ")
+        buying_price = data['Close'][i]
         buy_signal_found = True
         break
 
@@ -240,8 +242,9 @@ else:
     for j in range(buy_index + 1, len(data)):
         if buy_signal_found and sellCondition(data, j):
             sell_index = j
+            selling_price = data['Close'][j]
             st.error(
-                f"❌ Sell Condition **{count}** Met!\\\n**Date: {data['Datetime'][j]}** \\\n**Selling Price: {data['Close'][j]:.2f}** ")
+                f"❌ Sell Condition **{count}** Met!\\\n**Date: {data['Datetime'][j]}** \\\n**Selling Price: {data['Close'][j]:.2f}** \\\n **Total Return On Investment (ROI) : {((selling_price - buying_price) / buying_price) * 100:.2f}%**")
             count += 1
             break
 
