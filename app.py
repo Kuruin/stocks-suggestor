@@ -188,7 +188,7 @@ for symbol in stock_symbols:
                           f"{change:.2f} ({pct_change:.2f}%)")
 
 # Get only date and format to words
-data['Datetime'] = data['Datetime'].dt.strftime('%B %d, %Y')
+# data['Datetime'] = data['Datetime'].dt.strftime('%B %d, %Y')
 
 # Clickable subheader, mimics st.subheader() but makes it a clickable link
 st.markdown(
